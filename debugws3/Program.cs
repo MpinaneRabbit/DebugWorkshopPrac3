@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -85,10 +86,40 @@ namespace debugws3
         return new Result(0, "Wrong entry. Try again using one or more operations");
       }
 
-      double result = numbersToBeCalculated[0];
+    //  double result = numbersToBeCalculated[0];
 
+      ArrayList numbersAfterMultDiv = new ArrayList();
+      for(var i = 0; i < operations.Length; i++)
+      { 
+                if(operations[i] == '*' || operations[i] == '/')
+                {
+                    if(operations[i] == '*')
+                    {
+                        numbersAfterMultDiv.Add(numbersToBeCalculated[i]*numbersToBeCalculated[i+1]);
+                    }
+                    else if(operations[i] == '/')
+                    {
+                        numbersAfterMultDiv.Add(numbersToBeCalculated[i]/numbersToBeCalculated[i+1]);
+                    }
+                }
+                else
+                {
+                    if(i == 0)
+                    {
+                        numbersAfterMultDiv.Add(numbersToBeCalculated[i]);
+                    }
+                    else
+                    {
+                        numbersAfterMultDiv.Add(numbersToBeCalculated[i+1]);
+                    }
+                    
+                }
+      }
+
+
+      double result = numbersAfterMultDiv[0];
       var j = 0;
-      for (var i = 1; i < numbersToBeCalculated.Length; i++)
+      for (var i = 1; i < numbersAfterMultDiv.Count; i++)
       {
         switch (operations[j])
         {
@@ -102,7 +133,7 @@ namespace debugws3
               result -= numbersToBeCalculated[i];
               break;
             }
-          case '*':
+        /*  case '*':
             {
               result *= numbersToBeCalculated[i];
               break;
@@ -111,7 +142,7 @@ namespace debugws3
             {
               result /= numbersToBeCalculated[i];
               break;
-            }
+            }*/
           default:
             break;
         }
